@@ -1,0 +1,7 @@
+#!/bin/bash
+# Dump all tracked files (respecting .gitignore) to a single text file with filename headers.
+# Excludes: site/ folder, previous repo-*.txt files, and binary files.
+# Includes: Python, JavaScript, shells, Markdown, Jupyter, C/C++, LabVIEW, config files.
+# Output: repo-DDHHMMSS.txt
+output=$(git ls-files --exclude-standard | grep -v '^site/' | grep -v '^repo-' | grep -E '\.(py|js|md|txt|rs|bat|cmd|ipynb|ini|h|c|cpp|vi|lvlib|ctl|mnu)$' | tr '\n' '\0' | xargs -0 -I {} sh -c 'echo "=== {} ===" && cat "{}"')
+echo "$output" > "repo-$(date +%d%H%M%S).txt"
